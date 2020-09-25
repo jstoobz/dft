@@ -33,7 +33,7 @@ if ! xcode-select --print-path > /dev/null; then
   # the appropriate directory from within `Xcode.app`
   # https://github.com/alrra/dotfiles/issues/13
 
-  sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer
+  sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
   print_result $? 'Make "xcode-select" developer directory point to Xcode'
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
