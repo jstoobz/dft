@@ -1,11 +1,11 @@
 #!/bin/sh
 
-# stops the execution of a script if a command or pipeline has an error
-set -e
-
-cd '$(dirname "$0")/..'
+cd "$(dirname "$0")/.."
 # Prints the actual path (as opposed to symbolic)
 DOTFILES_ROOT=$(pwd -P)
+
+# stops the execution of a script if a command or pipeline has an error
+set -e
 
 # Ask for the administrator password upfront
 sudo -v
