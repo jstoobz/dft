@@ -45,4 +45,12 @@ if xcode-select -p &> /dev/null; then
   success "Xcode found"
 else
   info "Installing Xcode"
+  xcode-select --install &> /dev/null
+
+  until xcode-select --print-path &> /dev/null;
+  do
+    info "Sleeping..."
+    sleep 5
+  done
+  success "Installed Xcode"
 fi
