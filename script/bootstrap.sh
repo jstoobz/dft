@@ -41,8 +41,8 @@ fail() {
 }
 
 
-if xcode-select --print-path > /dev/null; then
+if xcode-select -p &> /dev/null; then
   success "Xcode found"
 else
-  fail "Xcode not found"
+  info "Installing Xcode"
 fi
