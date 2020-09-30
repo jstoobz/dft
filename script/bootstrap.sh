@@ -41,7 +41,7 @@ fail() {
 }
 
 
-if xcode-select -p; then
+if xcode-select -p > /dev/null; then
   success "Xcode found"
 else
   fail "Xcode not found"
