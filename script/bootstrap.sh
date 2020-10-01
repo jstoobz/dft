@@ -40,14 +40,16 @@ fail() {
 	exit
 }
 
-_exists() {
-  command -v "$1" > /dev/null 2>&1
+command_exists() {
+  command -v "$@" >/dev/null 2>&1
 }
 
 # if xcode-select -p &> /dev/null; then
 
 install_cli_tools() {
-	if ! [ "$(xcode-select -p)" ]; then
+	info "Checking for Xcode CLI tools..."
+
+	if [ ! "$(xcode-select -p)" ]; then
 		info "Installing Xcode"
 		xcode-select --install
 		until [ "$(xcode-select -p)" ];
@@ -62,17 +64,24 @@ install_cli_tools() {
 }
 
 install_homebrew() {
-  info "Trying to detect installed Homebrew..."
+	info "Checking for Homebrew..."
 
-  if ! _exists brew; then
-    info "Installing Homebrew..."
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-	success "Homebrew was installed"
-    brew update
-    brew upgrade
-  else
-    success "You already have Homebrew installed. Skipping..."
-  fi
+	if ! command_exists brew; then
+		info "Installing Homebrew..."
+		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+		brew update
+		brew upgrade
+		success "Homebrew was installed"
+	else
+		success "You already have Homebrew installed. Skipping..."
+	fi
+}
+
+install_brew() {
+	info "Installing brew packages..."
+
+	
+
 }
 
 main() {
