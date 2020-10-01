@@ -41,7 +41,7 @@ fail() {
 }
 
 
-if ! [ $(xcode-select -p) ]; then
+if [ $(xcode-select -p) ]; then
   info "Installing Xcode"
   xcode-select --install
   until [ $(xcode-select -p) ];
