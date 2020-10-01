@@ -41,15 +41,26 @@ fail() {
 }
 
 
-if ! [ $(xcode-select -p) ]; then
-  info "Installing Xcode"
-  xcode-select --install
-  until [ $(xcode-select -p) ];
-  do
-    info "Sleeping..."
-    sleep 5
-  done
-  success "Installed Xcode"
-else
-  success "Xcode found"
-fi
+install_cli_tools() {
+	if ! [ "$(xcode-select -p)" ]; then
+		info "Installing Xcode"
+		xcode-select --install
+		until [ "$(xcode-select -p)" ];
+		do
+			info "Sleeping..."
+			sleep 5
+		done
+		success "Installed Xcode"
+	else
+		success "Xcode found"
+	fi
+}
+
+
+
+main() {
+  install_cli_tools "$@"
+
+}
+
+main "$@"
