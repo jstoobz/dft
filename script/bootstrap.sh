@@ -77,16 +77,23 @@ install_homebrew() {
 	fi
 }
 
-install_brew() {
-	info "Installing brew packages..."
+install_git() {
+	info "Checking for git via brew..."
 
-	
+	if ! [ -d "$(brew --prefix)/bin/git" ]; then
+		info "Git has been installed via brew"
+	else
+		info "Installing git..."
+		brew install git
+		sucess "Installed git"
+	fi
 
 }
 
 main() {
 	install_cli_tools "$@"
 	install_homebrew "$@"
+	install_git "$@"
 }
 
 main "$@"
