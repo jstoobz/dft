@@ -80,7 +80,7 @@ install_homebrew() {
 install_git() {
 	info "Checking for git via brew..."
 
-	if [ -d $(brew --prefix)/bin/git ]; then
+	if ! [ -s "$(brew --prefix)/bin/git" ]; then
 		info "Installing git..."
 		brew install git
 		sucess "Installed git"
