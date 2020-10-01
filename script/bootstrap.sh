@@ -42,8 +42,6 @@ fail() {
 
 
 if ! [ $(xcode-select -p) ]; then
-  success "Xcode found"
-else
   info "Installing Xcode"
   xcode-select --install
   until [ $(xcode-select -p) ];
@@ -52,4 +50,6 @@ else
     sleep 5
   done
   success "Installed Xcode"
+else
+  success "Xcode found"
 fi
