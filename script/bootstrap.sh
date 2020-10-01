@@ -41,16 +41,15 @@ fail() {
 }
 
 
-if xcode-select -p &> /dev/null; then
-  success "Xcode found"
-else
+if ! [ $(xcode-select -p) ]; then
   info "Installing Xcode"
-  xcode-select --install &> /dev/null
-
-  until xcode-select --print-path &> /dev/null;
+  xcode-select --install
+  until [ $(xcode-select -p) ];
   do
     info "Sleeping..."
     sleep 5
   done
   success "Installed Xcode"
+else
+  success "Xcode found"
 fi
