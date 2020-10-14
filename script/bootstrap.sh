@@ -16,8 +16,6 @@ sudo -v
 # Keep-alive: update existing 'sudo' time stamp until '.osx' has finished
 # while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
-echo ''
-
 info() {
 	# shellcheck disable=SC2059
 	printf "\r  [ \033[00;34m..\033[0m ] $1\n"
@@ -35,13 +33,12 @@ success() {
 
 fail() {
 	# shellcheck disable=SC2059
-	printf "\r\033[2K  [\033[0;31mFAIL\033[0m] $1\n"
-	echo ''
+	printf "\r\033[2K  [\033[0;31mFAIL\033[0m] $1\n\n"
 	exit
 }
 
 command_exists() {
-  command -v "$@" >/dev/null 2>&1
+	command -v "$@" >/dev/null 2>&1
 }
 
 # if xcode-select -p &> /dev/null; then
@@ -49,49 +46,52 @@ command_exists() {
 install_cli_tools() {
 	info "Checking for Xcode CLI tools..."
 
-	if [ ! "$(xcode-select -p)" ]; then
-		info "Installing Xcode"
-		xcode-select --install
-		until [ "$(xcode-select -p)" ];
-		do
-			info "Sleeping..."
-			sleep 5
-		done
-		success "Installed Xcode"
-	else
+	if [ "$(xcode-select -p)" ]; then
 		success "Xcode found"
+		return
 	fi
+
+	info "Installing Xcode"
+	xcode-select --install
+	until [ "$(xcode-select -p)" ];
+	do
+		info "Sleeping..."
+		sleep 5
+	done
+	success "Installed Xcode"
 }
 
 install_homebrew() {
 	info "Checking for Homebrew..."
 
-	if ! command_exists brew; then
-		info "Installing Homebrew..."
-		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-		brew update
-		brew upgrade
-		success "Homebrew was installed"
-	else
-		success "You already have Homebrew installed. Skipping..."
+	if command_exists brew; then
+		success "You already have Homebrew installed"
+		return
 	fi
+
+	info "Installing Homebrew..."
+	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+	brew update
+	brew upgrade
+	success "Homebrew was installed"
 }
 
 install_git() {
 	info "Checking for git via brew..."
 
-	if ! [ -s "$(brew --prefix)/bin/git" ]; then
-		info "Installing git..."
-		brew install git
-		sucess "Installed git"
-	else
-		info "Git is already installed via brew"
+	if [ -x "$(brew --prefix)/bin/git" ]; then
+		success "Git is already installed via brew"
+		return
 	fi
 
+	info "Installing git..."
+	brew install git
+	success "Installed git"
 }
 
 
 main() {
+	echo ''
 	install_cli_tools "$@"
 	install_homebrew "$@"
 	install_git "$@"
